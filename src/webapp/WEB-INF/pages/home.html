@@ -2,221 +2,45 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
 <head>
     <meta th:charset="UTF-8">
-    <title>CRUD-Operation</title>
+    <title th:text="${titleText}"></title>
     <style>
+        /* Установка шрифта */
         body {
             font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
         }
 
+        /* Стилизация заголовка */
         h1 {
+            font-size: 32px;
             text-align: center;
-            margin-top: 20px;
+            margin-top: 50px;
         }
 
-        form {
-            display: flex;
-            flex-direction: column;
-            width: 50%;
-            margin: auto;
-            margin-bottom: 20px;
-        }
-
-        .form-row {
-            display: flex;
-            flex-direction: row;
-            justify-content: space-between;
-            margin-bottom: 10px;
-        }
-
-        label {
-            margin-right: 10px;
-        }
-
-        input[type="text"] {
-            padding: 5px;
-            border-radius: 5px;
-            border: 1px solid #ccc;
-            width: 70%;
-        }
-
-        .form-actions {
-            display: flex;
-            flex-direction: row;
-            justify-content: flex-end;
-        }
-
+        /* Стилизация кнопки */
         button[type="submit"] {
-            background-color: #333;
-            color: #fff;
-            border: none;
-            padding: 5px 10px;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: all 0.2s ease-in-out;
-        }
-
-        button[type="submit"]:hover {
-            background-color: #fff;
-            color: #333;
-        }
-
-        table {
-            border-collapse: collapse;
-            margin: auto;
-            width: 80%;
-        }
-
-        table, th, td {
-            border: 1px solid #ccc;
-        }
-
-        th, td {
-            text-align: center;
-            padding: 10px;
-        }
-
-        th {
-            background-color: #eee;
-        }
-
-        tr:nth-child(even) {
-            background-color: #f2f2f2;
-        }
-
-        .refresh-form {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-bottom: 20px;
-        }
-
-        .refresh-form button {
-            background-color: #ddd;
-            color: #333;
-            border: none;
-            padding: 5px 10px;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: all 0.2s ease-in-out;
-        }
-
-        .refresh-form button:hover {
-            background-color: #333;
-            color: #fff;
-        }
-
-        .form-row label {
-            font-weight: bold;
-            margin-right: 10px;
-        }
-
-        .form-row input[type="text"] {
-            padding: 5px;
-            border-radius: 5px;
-            border: 1px solid #ccc;
-        }
-
-        .form-actions button {
             background-color: #4CAF50;
-            color: #fff;
-            padding: 8px 12px;
+            color: white;
             border: none;
-            border-radius: 5px;
+            padding: 12px 32px;
+            margin: 10px auto;
+            border-radius: 4px;
             cursor: pointer;
-            transition: all 0.2s ease-in-out;
-            margin-top: 10px;
+            display: block;
         }
 
-        .form-actions button:hover {
-            background-color: #333;
+        .button-row {
+            text-align: center;
         }
-
 
     </style>
 </head>
 <body>
-<h1>CRUD-Operation</h1>
-<!-- Форма для создания пользователя -->
-<form th:action="@{/user/create}" method="post" th:accept-charset="UTF-8">
-    <div class="form-row">
-        <label for="name">Name:</label>
-        <input type="text" id="name" name="name">
-    </div>
-    <div class="form-row">
-        <label for="city">City:</label>
-        <input type="text" id="city" name="city">
-    </div>
-    <div class="form-actions">
-        <button type="submit">Create</button>
-    </div>
-</form>
-<!-- Таблица для отображения пользователей -->
-<table>
-    <thead>
-    <tr>
-        <th>ID</th>
-        <th>Name</th>
-        <th>City</th>
-        <th></th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr th:each="user : ${users}">
-        <td th:text="${user.id}"></td>
-        <td th:text="${user.username}"></td>
-        <td th:text="${user.city}"></td>
-        <td>
-            <form th:action="@{/user/delete}" method="post">
-                <input type="hidden" name="id" th:value="${user.id}"/>
-                <button type="submit">Delete</button>
-            </form>
-        </td>
-        <td>
-            <form th:action="@{/user/edit}" method="get">
-                <input type="hidden" name="id" th:value="${user.id}"/>
-                <button type="submit">Edit</button>
-            </form>
-        </td>
-    </tr>
-    </tbody>
-</table>
-<!-- Форма для поиска пользователей -->
-<form th:action="@{/user/searchUserByCity}" method="get">
-    <div class="form-row">
-        <label>Search by city:</label>
-        <label>
-            <input type="text" name="city">
-        </label>
-    </div>
-    <div class="form-actions">
-        <button type="submit">Search</button>
-    </div>
-</form>
-<!-- Кнопка обновления таблицы -->
-<form th:action="@{/user}" method="get">
-    <button type="submit">Refresh</button>
-</form>
-<br>
-<!-- Кнопка редактирования пользователя -->
-<form th:action="@{/user/update}" method="post">
-    <input type="hidden" name="id" th:value="${userForEdit.id}" />
-    <div class="form-row">
-        <label for="name">Name:</label>
-        <label>
-            <input type="text" name="name" th:value="${userForEdit.username}">
-        </label>
-    </div>
-    <div class="form-row">
-        <label>City:</label>
-        <label>
-            <input type="text" name="city" th:value="${userForEdit.city}">
-        </label>
-    </div>
-    <div class="form-actions">
-        <button type="submit">Update</button>
-    </div>
-</form>
+    <h1 th:text="${H1_Text}"></h1>
+
+    <form th:action="@{/users}" method="GET">
+        <div class="button-row">
+            <button type="submit" class="button-add">Начать</button>
+        </div>
+    </form>
 </body>
 </html>

@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import web.model.User;
 import web.service.UserService;
 
 @Controller
@@ -15,57 +16,75 @@ public class UserController {
         this.userService = userService;
     }
 
-    @GetMapping(value = "/user")
-    public String getUsers(Model model) {
-        model.addAttribute("users", userService.getAllUsers());
+    @GetMapping("/")
+    public String getHomePage(Model model) {
+        model.addAttribute("titleText", "CRUD-Operation");
+        model.addAttribute("H1_Text", "Работа с CRUD операциями.");
         return "home";
     }
 
-    @PostMapping(value ="/user/create")
-    public String createUser(@RequestParam(name = "name") String name,
-                             @RequestParam(name = "city") String city,
-                             Model model) {
-
-        userService.add(name, city);
+    @GetMapping("/users")
+    public String geUsersPage(Model model) {
+        model.addAttribute("titleText", "CRUD-Operation");
+        model.addAttribute("H1_Text", "Список пользователей");
         model.addAttribute("users", userService.getAllUsers());
-        return "home";
+        return "users";
     }
 
-    @PostMapping(value ="/user/delete")
+    @GetMapping(value = "/user/create")
+    public String getCreateUserPage(Model model) {
+        model.addAttribute("user", new User());
+        model.addAttribute("title", "Добавление пользователя");
+        model.addAttribute("H1", "Добавление нового пользователя.");
+        return "create";
+    }
+
+    @PostMapping(value = "/user/create")
+    public String createUser(@ModelAttribute("user") User user, Model model) {
+        userService.add(user);
+        model.addAttribute("users", userService.getAllUsers());
+        return "users";
+    }
+
+    @GetMapping(value = "/user/delete")
+    public String getDeletePage(Model model) {
+        model.addAttribute("title", "Удаление пользователя");
+        model.addAttribute("H1", "Удаление пользователя по id.");
+        return "delete";
+    }
+
+    @PostMapping(value = "/user/delete")
     public String deleteUser(@RequestParam(name = "id") Long id, Model model) {
         userService.remove(id);
         model.addAttribute("users", userService.getAllUsers());
-        return "home";
+        return "users";
     }
 
-    @GetMapping(value ="/user/searchUserByCity")
-    public String searchUser(@RequestParam(name = "city") String city, Model model) {
-        model.addAttribute("users", userService.getUsersByCity(city));
-        return "home";
+    @GetMapping(value = "/user/edit")
+    public String getEditPage(Model model) {
+        model.addAttribute("user", new User());
+        model.addAttribute("title", "Редактирование пользователя");
+        model.addAttribute("H1", "Редактирование пользователя.");
+        return "edit";
     }
 
-    @GetMapping(value ="/user/edit")
-    public String editUser(@RequestParam(name = "id") Long id, Model model) {
+    @PostMapping(value = "/user/edit")
+    public String editUser(@ModelAttribute("user") User user, Model model) {
+        userService.updateUser(user);
         model.addAttribute("users", userService.getAllUsers());
-        model.addAttribute("userForEdit", userService.getUserById(id));
-        return "home";
+        return "users";
     }
 
-    @PostMapping(value ="/user/update")
-    public String updateUser(@RequestParam(name = "id") Long id,
-                             @RequestParam(name = "name") String name,
-                             @RequestParam(name = "city") String city,
-                             Model model) {
-
-        userService.updateUser(id, name, city);
-        model.addAttribute("users", userService.getAllUsers());
-        return "home";
+    @GetMapping(value = "/user/find")
+    public String getFindPage(Model model) {
+        model.addAttribute("title", "Поиск пользователя");
+        model.addAttribute("H1", "Поиск пользователя по id.");
+        return "find";
     }
 
-    @GetMapping("/")
-    public String homePage(Model model) {
-        model.addAttribute("title", "CRUD-Operation");
-        model.addAttribute("users", userService.getAllUsers());
-        return "home";
+    @PostMapping(value = "/user/find")
+    public String findUser(@RequestParam(name = "id") Long id, Model model) {
+        model.addAttribute("users", userService.getUserById(id));
+        return "users";
     }
 }

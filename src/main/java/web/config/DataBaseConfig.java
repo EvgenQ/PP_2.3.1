@@ -1,6 +1,5 @@
 package web.config;
 
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -12,7 +11,6 @@ import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
-
 import javax.sql.DataSource;
 import java.util.Objects;
 import java.util.Properties;
@@ -22,8 +20,11 @@ import java.util.Properties;
 @EnableTransactionManagement
 public class DataBaseConfig {
 
+    private final Environment environment;
     @Autowired
-    private Environment environment;
+    public DataBaseConfig(Environment environment) {
+        this.environment = environment;
+    }
 
     @Bean
     public DataSource getDataSource() {
@@ -37,7 +38,7 @@ public class DataBaseConfig {
 
     @Bean
     public Properties getProperties() {
-        Properties props=new Properties();
+        Properties props = new Properties();
         props.put("hibernate.show_sql", environment.getProperty("HIBERNATE.SHOW_SQL"));
         props.put("hibernate.hbm2ddl.auto", environment.getProperty("HIBERNATE.HBM2DDL.AUTO"));
         return props;

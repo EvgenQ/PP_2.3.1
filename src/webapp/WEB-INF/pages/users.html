@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta th:charset="UTF-8">
+    <title th:text="${titleText}"></title>
+    <style>
+        /* установка шрифта */
+        body {
+            font-family: Arial, sans-serif;
+        }
+
+        /* Стилизация заголовка */
+        h1 {
+            font-size: 32px;
+            text-align: center;
+            margin-top: 50px;
+        }
+
+        /* Стилизация таблицы */
+        table {
+            margin: 50px auto;
+            border-collapse: collapse;
+            width: 80%;
+            max-width: 1000px;
+        }
+
+        th,
+        td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        /* Стилизация кнопок */
+        .button-container {
+            margin-top: 50px;
+            text-align: center;
+        }
+
+        button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 12px 32px;
+            margin: 10px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        /* стилизация каждой кнопки */
+        .button-add {
+            background-color: #4CAF50;
+        }
+
+        .button-delete {
+            background-color: #f44336;
+        }
+
+        .button-edit {
+            background-color: #008CBA;
+        }
+
+        .button-find {
+            background-color: #808080;
+        }
+
+        .button-return {
+            background-color: #DC143C
+        ;
+        }
+
+    </style>
+</head>
+<body>
+<h1 th:text="${H1_Text}"></h1>
+<!-- Таблица для отображения пользователей -->
+<table>
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>City</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="user : ${users}">
+        <td th:text="${user.id}"></td>
+        <td th:text="${user.username}"></td>
+        <td th:text="${user.city}"></td>
+    </tr>
+    </tbody>
+</table>
+
+<div class="button-container">
+    <form th:action="@{/user/create}" method="GET">
+        <button type="submit" class="button-add">Добавить</button>
+    </form>
+
+    <form th:action="@{/user/delete}" method="GET">
+        <button type="submit" class="button-delete">Удалить</button>
+    </form>
+
+    <form th:action="@{/user/edit}" method="GET">
+        <button type="submit" class="button-edit">Редактировать</button>
+    </form>
+
+    <form th:action="@{/user/find}" method="GET">
+        <button type="submit" class="button-find">Найти</button>
+    </form>
+
+    <form th:action="@{/users}" method="GET">
+        <button type="submit" class="button-return">Вернуться к списку</button>
+    </form>
+</div>
+
+</body>
+</html>
