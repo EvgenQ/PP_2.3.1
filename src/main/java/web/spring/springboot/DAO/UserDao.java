@@ -1,6 +1,6 @@
-package web.DAO;
+package web.spring.springboot.DAO;
 
-import web.model.User;
+import web.spring.springboot.model.User;
 import java.util.List;
 
 public interface UserDao {

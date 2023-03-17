@@ -1,11 +1,12 @@
-package web.controller;
+package web.spring.springboot.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import web.model.User;
-import web.service.UserService;
+import web.spring.springboot.model.User;
+import web.spring.springboot.service.UserService;
+
 
 @Controller
 public class UserController {
